@@ -1,6 +1,8 @@
+@Logowanie
+
 Feature: Logowanie do systemu
 
-  Scenario Outline: Scneariusz Podstawowy
+  Scenario: Scneariusz Podstawowy
     Given UŻYTKOWNIK przechodzi do strony https://demoqa.com/
     Given SYSTEM wyświetla stronę ToolsQa
     When UŻYTKOWNIK wybiera kafel Forms

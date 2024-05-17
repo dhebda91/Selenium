@@ -9,10 +9,14 @@ public enum Categories {
     INTERACTIONS("Interactions"),
     BOOKS("Books");
 
-    private final String category;
+    public final String category;
 
     Categories(String category) {
         this.category = category;
+    }
+
+    public String getName(){
+        return category;
     }
 }
 

@@ -1,6 +1,7 @@
 package page.objects;
 
 import commons.driver.manager.DriverManager;
+import commons.waits.WaitForElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -11,26 +12,32 @@ import static page.objects.Categories.*;
 
 public class DashboardPage extends BasePage {
 
-    public void selectCategory(String category) {
+    @FindBy(css = ".col-12.col-md-6.mt-4")
+    private WebElement selectAnItemFromLeftToStartPracticeElement;
+
+    @FindBy(xpath = "//span[text()='Practice Form']")
+    private WebElement practiceFormElement;
+
+    public DashboardPage selectCategory(String category) {
         String xpath = null;
         switch (category) {
-            case "ELEMENTS":
-                xpath = "//h5[text()='" + ELEMENTS.name() + "']";
+            case "Elements":
+                xpath = "//h5[text()='" + ELEMENTS.getName() + "']";
                 break;
-            case "FORMS":
-                xpath = "//h5[text()='" + FORMS.name() + "']";
+            case "Forms":
+                xpath = "//h5[text()='" + FORMS.getName() + "']";
                 break;
-            case "ALERTS":
-                xpath = "//h5[text()='" + ALERTS.name() + "']";
+            case "Alerts":
+                xpath = "//h5[text()='" + ALERTS.getName() + "']";
                 break;
-            case "WIDGETS":
-                xpath = "//h5[text()='" + WIDGETS.name() + "']";
+            case "Widgets":
+                xpath = "//h5[text()='" + WIDGETS.getName() + "']";
                 break;
-            case "INTERACTIONS":
-                xpath = "//h5[text()='" + INTERACTIONS.name() + "']";
+            case "Interactions":
+                xpath = "//h5[text()='" + INTERACTIONS.getName() + "']";
                 break;
-            case "BOOKS":
-                xpath = "//h5[text()='" + BOOKS.name() + "']";
+            case "Books":
+                xpath = "//h5[text()='" + BOOKS.getName() + "']";
                 break;
         }
 
@@ -39,5 +46,18 @@ public class DashboardPage extends BasePage {
         } else {
             System.out.println("Niepoprawna kategoria: " + category);
         }
+
+        return this;
+    }
+
+    public DashboardPage checkControlElement() {
+        String text = "Please select an item from left to start practice.";
+//        WaitForElement.waitUntilElementIsInvisible(selectAnItemFromLeftToStartPracticeElement);
+        Assert.assertEquals(selectAnItemFromLeftToStartPracticeElement.getText(), text);
+        return this;
+    }
+    @Step("Selecting Practice form")
+    public void selectingPracticeForm(){
+        practiceFormElement.click();
     }
 }
