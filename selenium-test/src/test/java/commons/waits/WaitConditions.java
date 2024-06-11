@@ -10,9 +10,10 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.textToBePresentI
 public class WaitConditions {
     private WebDriverWait webDriverWait;
 
-    private WaitConditions(){}
-    
-    public WaitConditions(WebDriverWait webDriverWait){
+    private WaitConditions() {
+    }
+
+    public WaitConditions(WebDriverWait webDriverWait) {
         this.webDriverWait = webDriverWait;
     }
 
@@ -39,6 +40,7 @@ public class WaitConditions {
     public void untilURLToBe(String URL) {
         webDriverWait.until(ExpectedConditions.urlToBe(URL));
     }
+
     public void untilURLContains(String URL) {
         webDriverWait.until(ExpectedConditions.urlContains(URL));
     }
@@ -51,26 +53,32 @@ public class WaitConditions {
         webDriverWait.until(ExpectedConditions.titleContains(title));
     }
 
-    public void untilAttributeToBe(WebElement element, String attribute, String value){
+    public void untilAttributeToBe(WebElement element, String attribute, String value) {
         webDriverWait.until(ExpectedConditions.attributeToBe(element, attribute, value));
     }
 
     public void untilAttributeToBeNotEmpty(WebElement webElement, String attribute) {
         webDriverWait.until(ExpectedConditions.attributeToBeNotEmpty(webElement, attribute));
     }
-    public void untilAttributeContains(WebElement element, String attribute, String value){
+
+    public void untilAttributeContains(WebElement element, String attribute, String value) {
         webDriverWait.until(ExpectedConditions.attributeContains(element, attribute, value));
     }
 
-    public void untilPresenceInDOM(By element){
+    public void untilPresenceInDOM(By element) {
         webDriverWait.until(ExpectedConditions.presenceOfElementLocated(element));
     }
-    public void untilNotPresentInDOM(WebElement element){
+
+    public void untilNotPresentInDOM(WebElement element) {
         webDriverWait.until(ExpectedConditions.stalenessOf(element));
     }
-    public void waitForVisibilityOfGivenElementAndClick(WebElement element){
+
+    public void waitForVisibilityOfGivenElementAndClick(WebElement element) {
         untilElementIsVisible(element);
         element.click();
     }
 
+    public void untilTextOnElementContains(WebElement element, String text) {
+        webDriverWait.until(ExpectedConditions.textToBePresentInElement(element, text));
+    }
 }

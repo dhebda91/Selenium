@@ -1,22 +1,14 @@
 package page.objects;
 
 import commons.driver.manager.DriverManager;
-import commons.waits.WaitForElement;
+import commons.waits.WaitBuilder;
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchSessionException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.Assert;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import static page.objects.Categories.*;
-import static page.objects.Categories.BOOKS;
+import java.util.zip.DataFormatException;
 
 public class AutomationPracticeFormPage extends BasePage {
 
@@ -29,12 +21,13 @@ public class AutomationPracticeFormPage extends BasePage {
     @FindBy(id = "userEmail")
     private WebElement userEmailInput;
     @FindBy(css = ".custom-control custom-radio custom-control-inline")
-    private List<WebElement> genderRadioCheckboxes; // fixme do zmiany nazwa
+    private List<WebElement> genderRadioCheckboxes;
     @FindBy(id = "userNumber")
     private WebElement mobileInput;
     @FindBy(id = "dateOfBirthInput")
-    private WebElement dateOfBirthInput; // TODO do zrobienia testy z dotapickera
-    @FindBy(css = "subjects-auto-complete__value-container subjects-auto-complete__value-container--is-multi css-1hwfws3")
+    private WebElement dateOfBirthInput;
+//    @FindBy(css = "subjects-auto-complete__value-container subjects-auto-complete__value-container--is-multi css-1hwfws3")
+    @FindBy(id = "subjectsContainer")
     private WebElement subjectsInput;
     @FindBy(css = ".custom-control custom-checkbox custom-control-inline")
     private List<WebElement> hobbiesCheckboxes;
@@ -54,9 +47,12 @@ public class AutomationPracticeFormPage extends BasePage {
     private WebElement monthSelectElement;
     @FindBy(css = ".react-datepicker__year-select")
     private WebElement yearSelectElement;
-    String day;
-    String month;
-    String year ;
+    @FindBy(css = ".react-datepicker__current-month--hasMonthDropdown")
+    private WebElement monthAndYearOnCalendar;
+
+    String dayOfBirth;
+    String monthOfBirth;
+    String yearOfBirth;
 
 
     public AutomationPracticeFormPage enterName(String name) {
@@ -104,59 +100,72 @@ public class AutomationPracticeFormPage extends BasePage {
     }
 
     @Step("Setting Date of birth")
-    public AutomationPracticeFormPage setDateOfBirth() {
-
+    public AutomationPracticeFormPage setDateOfBirth(String date) {
         dateOfBirthInput.click();
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        String date = "22 February 1991";
+        WaitBuilder.waitDefaultTime().untilElementIsVisible(monthAndYearOnCalendar);
+//        String date = "22 February 1991";
 
         // Podzielenie ciągu znaków na części przy użyciu metody split()
         String[] dateParts = date.split(" ");
 
         // Sprawdzenie, czy ciąg został poprawnie podzielony na trzy części
         if (dateParts.length == 3) {
-            day = dateParts[0];
-            month = dateParts[1];
-            year = dateParts[2];
-
-            // Wyświetlenie wyników
-            System.out.println("Day: " + day);
-            System.out.println("Month: " + month);
-            System.out.println("Year: " + year);
+            dayOfBirth = dateParts[0];
+            monthOfBirth = dateParts[1];
+            yearOfBirth = dateParts[2];
         } else {
-            System.out.println("Invalid date format.");
+            try {
+                throw new DataFormatException("Invalid date format.");
+            } catch (DataFormatException e) {
+                throw new RuntimeException(e);
+            }
         }
 
+        // Wyświetlenie wyników
+        System.out.println("Day: " + dayOfBirth);
+        System.out.println("Month: " + monthOfBirth);
+        System.out.println("Year: " + yearOfBirth);
+
+        // Month selection
         Select monthSelect = new Select(monthSelectElement);
-        monthSelect.selectByVisibleText(month);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        monthSelect.selectByVisibleText(monthOfBirth);
+        WaitBuilder.waitDefaultTime().untilTextOnElementContains(monthAndYearOnCalendar, monthOfBirth);
+        // Year selection
         Select yearSelect = new Select(yearSelectElement);
-        yearSelect.selectByVisibleText(year);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        yearSelect.selectByVisibleText(yearOfBirth);
+        WaitBuilder.waitDefaultTime().untilTextOnElementContains(monthAndYearOnCalendar, yearOfBirth);
+        // Day selection
+        List<WebElement> days = DriverManager.getWebDriver().findElements(By.cssSelector("div[role='listbox'] > div > div"));
+        if (!days.isEmpty()) {
+            for (WebElement day : days) {
+                String ariaLabel = day.getAttribute("aria-label");
+                if (ariaLabel.contains(monthOfBirth) && ariaLabel.contains(yearOfBirth) && day.getText().equals(dayOfBirth)) { // Zmodyfikuj datę i miesiąc według potrzeb
+                    day.click();
+                    break;
+                }
+            }
+        } else {
+            throw new AssertionError("There are no items on the calendar");
         }
-        String dateString = "22 February 1991";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
-        LocalDate date1 = LocalDate.parse(dateString, formatter);
+        return this;
+    }
 
-        // Pobranie dnia tygodnia
-        DayOfWeek dayOfWeek = date1.getDayOfWeek();
-        System.out.println("Day of the week: " + dayOfWeek);
+    @Step("Selection of items")
+    public AutomationPracticeFormPage selectionOfItems() {
+////        subjectsInput.click();
+//        Actions actions = new Actions(DriverManager.getWebDriver());
+//        actions.moveToElement(DriverManager.getWebDriver()).click().sendKeys("your value").build().perform();
+        return this;
+    }
 
-        DriverManager.getWebDriver().findElement(By.xpath("//*[contains(@label, 'February 22nd, 1991')]")).click();
+    @Step("Selection of hobbies")
+    public AutomationPracticeFormPage selectionOfHobbies(String hobby) {
 
-// TODO: wybór dnia, jeżeli chcesz szukąć po wartości atrybutu label to należy dodać do tego jeszcze dzień miesiąca. Do zrobienia
+        for (WebElement hobbies : hobbiesCheckboxes)
+            if (hobbies.getText().contains(hobby)) {
+                hobbies.click();
+                break;
+            }
 
         return this;
     }
