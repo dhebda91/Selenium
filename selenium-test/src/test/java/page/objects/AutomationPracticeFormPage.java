@@ -1,11 +1,13 @@
 package page.objects;
 
+import commons.WebElementHelper;
 import commons.driver.manager.DriverManager;
 import commons.waits.WaitBuilder;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.asserts.SoftAssert;
 
 import java.util.List;
 import java.util.zip.DataFormatException;
@@ -15,13 +17,15 @@ public class AutomationPracticeFormPage extends BasePage {
     // https://demoqa.com/automation-practice-form
 
     @FindBy(id = "firstName")
-    private WebElement firstNameInput;
+    private WebElement nameInput;
     @FindBy(id = "lastName")
     private WebElement lastNameInput;
     @FindBy(id = "userEmail")
     private WebElement userEmailInput;
     @FindBy(css = ".custom-control custom-radio custom-control-inline")
     private List<WebElement> genderRadioCheckboxes;
+    @FindBy(css = "div#genterWrapper > .col-md-9.col-sm-12")
+    private WebElement genderRadioCheckWrapper;
     @FindBy(id = "userNumber")
     private WebElement mobileInput;
     @FindBy(id = "dateOfBirthInput")
@@ -31,11 +35,13 @@ public class AutomationPracticeFormPage extends BasePage {
     private WebElement subjectsInput;
     @FindBy(css = ".custom-control custom-checkbox custom-control-inline")
     private List<WebElement> hobbiesCheckboxes;
+    @FindBy(css = "div#hobbiesWrapper > .col-md-9.col-sm-12")
+    private WebElement hobbiesRadioCheckWrapper;
     @FindBy(id = "uploadPicture")
     private WebElement selectPictureButton;
     @FindBy(css = "textarea#currentAddress")
     private WebElement currentAddressField;
-    @FindBy(css = ". css-tlfecz-indicatorContainer")
+    @FindBy(css = ".css-tlfecz-indicatorContainer")
     private WebElement selectStateOpenListButton;
     @FindBy(css = "")
     private List<WebElement> selectStateOpenList;
@@ -49,14 +55,34 @@ public class AutomationPracticeFormPage extends BasePage {
     private WebElement yearSelectElement;
     @FindBy(css = ".react-datepicker__current-month--hasMonthDropdown")
     private WebElement monthAndYearOnCalendar;
+    @FindBy(css = "button#submit")
+    private WebElement submitButton;
 
     String dayOfBirth;
     String monthOfBirth;
     String yearOfBirth;
 
 
+    public void checkIfEverythingIsDisplayed(){
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(WebElementHelper.isAvailable(nameInput, false), "Name input is not displayed");
+        softAssert.assertTrue(WebElementHelper.isAvailable(lastNameInput, false), "Lastname input is not displayed");
+        softAssert.assertTrue(WebElementHelper.isAvailable(userEmailInput, false), "Email input is not displayed");
+        softAssert.assertTrue(WebElementHelper.isAvailable(genderRadioCheckWrapper, false), "Gender checkboxes is not displayed");
+        softAssert.assertTrue(WebElementHelper.isAvailable(mobileInput, false), "Mobile input is not displayed");
+        softAssert.assertTrue(WebElementHelper.isAvailable(dateOfBirthInput, false), "Date of Birth input is not displayed");
+        softAssert.assertTrue(WebElementHelper.isAvailable(subjectsInput, false), "Subjects input is not displayed");
+        softAssert.assertTrue(WebElementHelper.isAvailable(hobbiesRadioCheckWrapper, false), "Hobbies checkboxes input is not displayed");
+        softAssert.assertTrue(WebElementHelper.isAvailable(selectPictureButton, false), "Select picture element is not displayed");
+        softAssert.assertTrue(WebElementHelper.isAvailable(currentAddressField, false), "Current Address field is not displayed");
+        softAssert.assertTrue(WebElementHelper.isAvailable(selectStateOpenListButton, true), "State and City field is not displayed");
+        softAssert.assertTrue(WebElementHelper.isAvailable(submitButton, false), "Submit button is not displayed");
+        softAssert.assertAll();
+    }
+
+
     public AutomationPracticeFormPage enterName(String name) {
-        inputHelper(firstNameInput, name);
+        inputHelper(nameInput, name);
         return this;
     }
 
@@ -152,9 +178,13 @@ public class AutomationPracticeFormPage extends BasePage {
 
     @Step("Selection of items")
     public AutomationPracticeFormPage selectionOfItems() {
-////        subjectsInput.click();
-//        Actions actions = new Actions(DriverManager.getWebDriver());
-//        actions.moveToElement(DriverManager.getWebDriver()).click().sendKeys("your value").build().perform();
+        JavascriptExecutor js = (JavascriptExecutor) DriverManager.getWebDriver();
+        js.executeScript("arguments[0].value='Your input text';", subjectsInput);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return this;
     }
 

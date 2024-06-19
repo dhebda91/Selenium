@@ -3,8 +3,6 @@
 Feature: Logowanie do systemu
 
   Scenario: Scneariusz Podstawowy
-    Given UŻYTKOWNIK przechodzi do strony https://demoqa.com/
-    Given SYSTEM wyświetla stronę ToolsQa
     When UŻYTKOWNIK wybiera kafel Forms
     When SYSTEM wyświetla komunikat o konieczności wyboru elementu do ćwiczeń
     When UŻYTKOWNIK wybiera opcję Practice Form
@@ -22,7 +20,6 @@ Feature: Logowanie do systemu
     When UŻYTKOWNIK z listy rozwijanej wybiera stan
     When UŻYTKOWNIK z listy rozwijanej wybiera miasto
     When UŻYTKOWNIK klika przycisk Submit
-
 
 
 
