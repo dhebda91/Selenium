@@ -1,8 +1,9 @@
 package stepDefinitions;
 
-import Variables.CustomerData;
-import commons.driver.manager.DriverManager;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import variables.CustomerData;
+import commons.driver.manager.DriverManager;
 import io.cucumber.java.en.When;
 import org.testng.Assert;
 import page.objects.AutomationPracticeFormPage;
@@ -25,92 +26,120 @@ public class FormStepDefs extends BasePage {
     }
 
     public void setCustomerData() {
-        customerData.setFirstName("Dorota");
-        customerData.setLastName("Hebda");
-        customerData.setEmail("dorota.hebda91@gmail.com");
-        customerData.setPhone("000111000");
+        customerData.setFirstName("Jan");
+        customerData.setLastName("Kowlaski");
+        customerData.setEmail("Test.test@gmail.com");
+        customerData.setPhone("0001110001");
+        customerData.setAddress("Rynek 2, Cracow, Poland");
+        customerData.setBirthDate("22 February 1991");
+        customerData.setGender("Male");
+        customerData.setHobby("Music");
+        customerData.setState("NCR");
+        customerData.setCity("Delhi");
+        customerData.setSubject("English");
+
+    }
+//
+//    @When("STUDENT wybiera kafel {}")
+//    public void użytkownikWybieraKafelForms(String categories) {
+//        dashboardPage.selectCategory(categories);
+//    }
+//
+//    @When("SYSTEM wyświetla komunikat o konieczności wyboru elementu do ćwiczeń")
+//    public void systemWyświetlaKomunikatOKoniecznościWyboruElementuDoĆwiczeń() {
+//        dashboardPage.checkControlElement();
+//    }
+
+//    @When("STUDENT wybiera opcję Practice Form")
+//    public void użytkownikWybieraOpcjęPracticeForm() {
+//        dashboardPage.selectingPracticeForm();
+//        Assert.assertEquals(DriverManager.getWebDriver().getCurrentUrl(), "https://demoqa.com/automation-practice-form");
+//    }
+    // TODO to może się jeszcze przydać
+
+    @Given("STUDENT przechodzi do formularza")
+    public void studentPrzechodziDoFormularza() {
+        DriverManager.getWebDriver().navigate().to("https://demoqa.com/automation-practice-form");
     }
 
-    @When("UŻYTKOWNIK wybiera kafel {}")
-    public void użytkownikWybieraKafelForms(String categories) {
-        dashboardPage.selectCategory(categories);
-    }
-
-    @When("SYSTEM wyświetla komunikat o konieczności wyboru elementu do ćwiczeń")
-    public void systemWyświetlaKomunikatOKoniecznościWyboruElementuDoĆwiczeń() {
-        dashboardPage.checkControlElement();
-    }
-
-    @When("UŻYTKOWNIK wybiera opcję Practice Form")
-    public void użytkownikWybieraOpcjęPracticeForm() {
-        dashboardPage.selectingPracticeForm();
-        Assert.assertEquals(DriverManager.getWebDriver().getCurrentUrl(), "https://demoqa.com/automation-practice-form");
-    }
-
-    @When("SYSTEM wyświetla formularz")
+    @Given("SYSTEM wyświetla formularz")
     public void systemWyświetlaFormularz() {
-//        DriverManager.getWebDriver().navigate().to("https://demoqa.com/automation-practice-form");
         automationPracticeFormPage.checkIfEverythingIsDisplayed();
         setCustomerData();
     }
 
-    @When("UŻYTKOWNIK uzupełnia pole imię")
+    @When("STUDENT uzupełnia pole imię")
     public void użytkownikUzupełniaPoleImię() {
         automationPracticeFormPage.enterName(customerData.getFirstName());
     }
 
-    @When("UŻYTKOWNIK uzupełnia pole nazwisko")
+    @When("STUDENT uzupełnia pole nazwisko")
     public void użytkownikUzupełniaPoleNazwisko() {
         automationPracticeFormPage.enterLastName(customerData.getLastName());
     }
 
-    @When("UŻYTKOWNIK uzupełnia pole email")
+    @When("STUDENT uzupełnia pole email")
     public void użytkownikUzupełniaPoleEmail() {
         automationPracticeFormPage.enterUserEmail(customerData.getEmail());
     }
 
-    @When("UŻYTKOWNIK uzupełnia wybiera płeć")
+    @When("STUDENT uzupełnia wybiera płeć")
     public void użytkownikUzupełniaWybieraPłeć() {
-        automationPracticeFormPage.selectingGender("Male");
+        automationPracticeFormPage.selectingGender(customerData.getGender());
     }
 
-    @When("UŻYTKOWNIK uzupełnia pole numer telefonu")
+    @When("STUDENT uzupełnia pole numer telefonu")
     public void użytkownikUzupełniaPoleNumerTelefonu() {
         automationPracticeFormPage.enterPhone(customerData.getPhone());
     }
 
-    @When("UŻYTKOWNIK uzupełnia pole data urodzenia")
+    @When("STUDENT uzupełnia pole data urodzenia")
     public void użytkownikUzupełniaPoleDataUrodzenia() {
-        automationPracticeFormPage.setDateOfBirth("22 February 1991");
+        automationPracticeFormPage.setDateOfBirth(customerData.getBirthDate());
     }
 
-    @When("UŻYTKOWNIK uzupełnia pole przedmiot")
+    @When("STUDENT uzupełnia pole przedmiot")
     public void użytkownikUzupełniaPolePrzedmiot() {
-        automationPracticeFormPage.selectionOfItems();
+        automationPracticeFormPage.selectionOfItems(customerData.getSubject());
     }
 
-    @When("UŻYTKOWNIK uzupełnia wybiera hobby")
+    @When("STUDENT uzupełnia wybiera hobby")
     public void użytkownikUzupełniaWybieraHobby() {
-        automationPracticeFormPage.selectionOfHobbies("Music");
+        automationPracticeFormPage.selectionOfHobbies(customerData.getHobby());
     }
 
-    @When("UŻYTKOWNIK wgrywa zdjęcie")
+    @When("STUDENT wgrywa zdjęcie")
     public void użytkownikWgrywaZdjęcie() {
+        automationPracticeFormPage.addPhoto();
     }
 
-    @When("UŻYTKOWNIK uzupełnia pole obeczny adres")
+    @When("STUDENT uzupełnia pole obecny adres")
     public void użytkownikUzupełniaPoleObecznyAdres() {
+        automationPracticeFormPage.setCurrentAddress(customerData.getAddress());
     }
 
-    @When("UŻYTKOWNIK z listy rozwijanej wybiera stan")
+    @When("STUDENT z listy rozwijanej wybiera stan")
     public void użytkownikZListyRozwijanejWybieraStan() {
+        automationPracticeFormPage.selectState(customerData.getState());
     }
 
-    @When("UŻYTKOWNIK z listy rozwijanej wybiera miasto")
+    @When("STUDENT z listy rozwijanej wybiera miasto")
     public void użytkownikZListyRozwijanejWybieraMiasto() {
+        automationPracticeFormPage.selectCity(customerData.getCity());
     }
 
-    @When("UŻYTKOWNIK klika przycisk Submit")
+    @When("STUDENT klika przycisk Submit")
     public void użytkownikKlikaPrzyciskSubmit() {
+        automationPracticeFormPage.submitButtonClick();
+    }
+
+    @Then("SYSTEM wyświetla podsumowanie formularza")
+    public void systemWyświetlaPodsumowanieFormularza() {
+        automationPracticeFormPage.subbmitingTheForm();
+    }
+
+    @Then("STUDENT sprawdza dane")
+    public void studentSprawdzaDane() {
+        automationPracticeFormPage.studentCheckData();
     }
 }

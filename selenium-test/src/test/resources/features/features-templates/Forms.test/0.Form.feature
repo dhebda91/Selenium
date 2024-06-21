@@ -1,25 +1,27 @@
 @Form
 
-Feature: Uzupełnienie formularza
+Feature: Student uzupełnia formularz osobowy
 
+  @to
   Scenario: Scneariusz Podstawowy
-    When UŻYTKOWNIK wybiera kafel Forms
-    When SYSTEM wyświetla komunikat o konieczności wyboru elementu do ćwiczeń
-    When UŻYTKOWNIK wybiera opcję Practice Form
-    When SYSTEM wyświetla formularz
-    When UŻYTKOWNIK uzupełnia pole imię
-    When UŻYTKOWNIK uzupełnia pole nazwisko
-    When UŻYTKOWNIK uzupełnia pole email
-    When UŻYTKOWNIK uzupełnia wybiera płeć
-    When UŻYTKOWNIK uzupełnia pole numer telefonu
-    When UŻYTKOWNIK uzupełnia pole data urodzenia
-    When UŻYTKOWNIK uzupełnia pole przedmiot
-    When UŻYTKOWNIK uzupełnia wybiera hobby
-    When UŻYTKOWNIK wgrywa zdjęcie
-    When UŻYTKOWNIK uzupełnia pole obeczny adres
-    When UŻYTKOWNIK z listy rozwijanej wybiera stan
-    When UŻYTKOWNIK z listy rozwijanej wybiera miasto
-    When UŻYTKOWNIK klika przycisk Submit
+    Given STUDENT przechodzi do formularza
+    Given SYSTEM wyświetla formularz
+    When STUDENT uzupełnia pole imię
+    When STUDENT uzupełnia pole nazwisko
+    When STUDENT uzupełnia pole email
+    When STUDENT uzupełnia wybiera płeć
+    When STUDENT uzupełnia pole numer telefonu
+    When STUDENT uzupełnia pole data urodzenia
+    When STUDENT uzupełnia pole przedmiot
+    When STUDENT uzupełnia wybiera hobby
+    When STUDENT wgrywa zdjęcie
+    When STUDENT uzupełnia pole obecny adres
+    When STUDENT z listy rozwijanej wybiera stan
+    When STUDENT z listy rozwijanej wybiera miasto
+    When STUDENT klika przycisk Submit
+    Then SYSTEM wyświetla podsumowanie formularza
+    Then STUDENT sprawdza dane
+    Then STUDENT klika w przycisk Close
 
 
 
