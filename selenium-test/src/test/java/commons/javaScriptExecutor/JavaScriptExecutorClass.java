@@ -115,7 +115,9 @@ public class JavaScriptExecutorClass {
     }
 
     // Wpisanie tekstu w input
-    public void sendKeysJSE(String text, WebElement element){
+    public void sendKeysJSE(WebElement element,String text){
+        JavascriptExecutor javascriptExecutor = getJSE();
+        javascriptExecutor.executeScript("arguments[0].value='" + text + "';", element);
 
     }
 

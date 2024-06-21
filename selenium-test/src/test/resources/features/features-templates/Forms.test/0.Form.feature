@@ -1,6 +1,6 @@
-@Logowanie
+@Form
 
-Feature: Logowanie do systemu
+Feature: Uzupełnienie formularza
 
   Scenario: Scneariusz Podstawowy
     When UŻYTKOWNIK wybiera kafel Forms
@@ -20,6 +20,7 @@ Feature: Logowanie do systemu
     When UŻYTKOWNIK z listy rozwijanej wybiera stan
     When UŻYTKOWNIK z listy rozwijanej wybiera miasto
     When UŻYTKOWNIK klika przycisk Submit
+
 
 
 

@@ -30,10 +30,9 @@ public class AutomationPracticeFormPage extends BasePage {
     private WebElement mobileInput;
     @FindBy(id = "dateOfBirthInput")
     private WebElement dateOfBirthInput;
-//    @FindBy(css = "subjects-auto-complete__value-container subjects-auto-complete__value-container--is-multi css-1hwfws3")
-    @FindBy(id = "subjectsContainer")
+    @FindBy(id = "subjectsInput")
     private WebElement subjectsInput;
-    @FindBy(css = ".custom-control custom-checkbox custom-control-inline")
+    @FindBy(css = "div#hobbiesWrapper > .col-md-9.col-sm-12 > div")
     private List<WebElement> hobbiesCheckboxes;
     @FindBy(css = "div#hobbiesWrapper > .col-md-9.col-sm-12")
     private WebElement hobbiesRadioCheckWrapper;
@@ -64,6 +63,7 @@ public class AutomationPracticeFormPage extends BasePage {
 
 
     public void checkIfEverythingIsDisplayed(){
+        WaitBuilder.waitDefaultTime().untilElementIsVisible(nameInput);
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(WebElementHelper.isAvailable(nameInput, false), "Name input is not displayed");
         softAssert.assertTrue(WebElementHelper.isAvailable(lastNameInput, false), "Lastname input is not displayed");
@@ -117,12 +117,6 @@ public class AutomationPracticeFormPage extends BasePage {
     private void inputHelper(WebElement element, String value) {
         element.clear();
         element.sendKeys(value);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-//        Assert.assertEquals(element.getText(), value); // FIXME pobiera pustkę
     }
 
     @Step("Setting Date of birth")
@@ -178,13 +172,10 @@ public class AutomationPracticeFormPage extends BasePage {
 
     @Step("Selection of items")
     public AutomationPracticeFormPage selectionOfItems() {
-        JavascriptExecutor js = (JavascriptExecutor) DriverManager.getWebDriver();
-        js.executeScript("arguments[0].value='Your input text';", subjectsInput);
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+      WaitBuilder.waitDefaultTime().untilElementIsVisible(subjectsInput);
+        subjectsInput.sendKeys("English");
+        subjectsInput.sendKeys(Keys.ARROW_DOWN);
+        subjectsInput.sendKeys(Keys.ENTER);
         return this;
     }
 
