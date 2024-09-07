@@ -1,5 +1,4 @@
 package rest.api.jsonplaceholder;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.FileWriter;
