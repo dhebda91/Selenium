@@ -30,7 +30,7 @@ public class SuiteListener implements ISuiteListener {
     public void onStart(ISuite suite) {
         AllureEnvironmentSection.createEnvFile();
 //        FileManagingHelper.deleteDirectory(new File("src/test/resources/features/features-runtime"));
-//        FileManagingHelper.deleteWildcardFiles("src/test/resources/RQ", "*json");
+//        FileManagingHelper.deleteWildcardFiles("src/test/resources/RQ", "*Todos");
 
         env = System.getProperty("env");
         AllureEnvironmentSection.addEnvVariable("env", env);
@@ -89,7 +89,7 @@ public class SuiteListener implements ISuiteListener {
         String env = System.getProperty("env");
         String suiteName = suite.getName();
         FileManagingHelper.deleteDirectory(new File("src/test/resources/features/features-runtime"));
-//        FileManagingHelper.deleteWildcardFiles("src/test/resources/RQ", "*json");
+//        FileManagingHelper.deleteWildcardFiles("src/test/resources/RQ", "*Todos");
 //        FileManagingHelper.deleteWildcardFiles("videos", "*mp4");
         if (Objects.equals(suiteName, "Testy Express")) {
             ImageManager imageManager = new ImageManager();

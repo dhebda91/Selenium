@@ -2,26 +2,25 @@
 
 Feature: Student uzupełnia formularz osobowy
 
-  @to
-  Scenario: Scneariusz Podstawowy
-    Given STUDENT przechodzi do formularza
-    Given SYSTEM wyświetla formularz
-    When STUDENT uzupełnia pole imię
-    When STUDENT uzupełnia pole nazwisko
-    When STUDENT uzupełnia pole email
-    When STUDENT uzupełnia wybiera płeć
-    When STUDENT uzupełnia pole numer telefonu
-    When STUDENT uzupełnia pole data urodzenia
-    When STUDENT uzupełnia pole przedmiot
-    When STUDENT uzupełnia wybiera hobby
-    When STUDENT wgrywa zdjęcie
-    When STUDENT uzupełnia pole obecny adres
-    When STUDENT z listy rozwijanej wybiera stan
-    When STUDENT z listy rozwijanej wybiera miasto
-    When STUDENT klika przycisk Submit
-    Then SYSTEM wyświetla podsumowanie formularza
-    Then STUDENT sprawdza dane
-    Then STUDENT klika w przycisk Close
+  Scenario: Scenariusz Podstawowy
+    * STUDENT przechodzi do formularza
+    * SYSTEM wyświetla formularz
+    * STUDENT uzupełnia pole imię
+    * STUDENT uzupełnia pole nazwisko
+    * STUDENT uzupełnia pole email
+    * STUDENT uzupełnia wybiera płeć
+    * STUDENT uzupełnia pole numer telefonu
+    * STUDENT uzupełnia pole data urodzenia
+    * STUDENT uzupełnia pole przedmiot
+    * STUDENT uzupełnia wybiera hobby
+    * STUDENT wgrywa zdjęcie
+    * STUDENT uzupełnia pole obecny adres
+    * STUDENT z listy rozwijanej wybiera stan
+    * STUDENT z listy rozwijanej wybiera miasto
+    * STUDENT klika przycisk Submit
+    * SYSTEM wyświetla podsumowanie formularza
+    * STUDENT sprawdza dane
+    * STUDENT klika w przycisk Close
 
 
 

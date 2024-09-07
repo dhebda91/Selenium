@@ -71,10 +71,11 @@ public class AutomationPracticeFormPage extends BasePage {
     private WebElement submitButton;
 
     // podziekowanie
-    @FindBy(css = "modal-content")
-    private WebElement subbmitingWindow;
-    @FindBy(css = "#example-modal-sizes-title-lg")
+    @FindBy(id = "example-modal-sizes-title-lg")
     private WebElement subbmitingTitle;
+    @FindBy(id = "closeLargeModal")
+    private WebElement closeLargeModalButton;
+
 
     String dayOfBirth;
     String monthOfBirth;
@@ -259,8 +260,9 @@ public class AutomationPracticeFormPage extends BasePage {
 
     @Step("Thanks for submitting the form")
     public AutomationPracticeFormPage subbmitingTheForm() {
-        assertTrue(subbmitingWindow.isDisplayed());
-        assertEquals(subbmitingTitle, "Thanks for submitting the form");
+        WaitBuilder.waitDefaultTime().untilElementIsVisible(subbmitingTitle);
+        assertTrue(subbmitingTitle.isDisplayed());
+        assertEquals("Thanks for submitting the form", subbmitingTitle.getText());
         return this;
     }
 
@@ -268,6 +270,12 @@ public class AutomationPracticeFormPage extends BasePage {
     public AutomationPracticeFormPage studentCheckData() {
 
         return this;
+    }
+
+    @Step("Student clicks close")
+    public void studentClicksClose() {
+        WaitBuilder.waitDefaultTime().untilElementIsVisible(closeLargeModalButton);
+        closeLargeModalButton.click();
     }
 
     private WebElement labelLocatorBuilding(String labelName) {
