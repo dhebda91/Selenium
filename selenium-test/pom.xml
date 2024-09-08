@@ -25,6 +25,28 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.2.3</version>
+        </dependency>
+        <!-- Json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20230227</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.1.4</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -32,7 +54,6 @@
             <version>${projectlombok.verion}</version>
             <scope>provided</scope>
         </dependency>
-
         <!-- Full Screenshot -->
         <dependency>
             <groupId>ru.yandex.qatools.ashot</groupId>
@@ -42,9 +63,8 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.6</version>
+            <version>2.16.1</version>
         </dependency>
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
@@ -109,10 +129,10 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-        <groupId>org.seleniumhq.selenium</groupId>
-        <artifactId>selenium-firefox-driver</artifactId>
-        <version>${selenium.version}</version>
-        <scope>compile</scope>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-firefox-driver</artifactId>
+            <version>${selenium.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>

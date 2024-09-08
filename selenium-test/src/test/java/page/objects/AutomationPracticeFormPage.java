@@ -2,6 +2,8 @@ package page.objects;
 
 import commons.WebElementHelper;
 import commons.driver.manager.DriverManager;
+import commons.helpers.FileManagingHelper;
+import commons.javaScriptExecutor.JavaScriptExecutorClass;
 import commons.waits.WaitBuilder;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
@@ -9,8 +11,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.asserts.SoftAssert;
 
+import java.io.File;
 import java.util.List;
 import java.util.zip.DataFormatException;
+
+import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.AssertJUnit.assertTrue;
 
 public class AutomationPracticeFormPage extends BasePage {
 
@@ -30,25 +36,31 @@ public class AutomationPracticeFormPage extends BasePage {
     private WebElement mobileInput;
     @FindBy(id = "dateOfBirthInput")
     private WebElement dateOfBirthInput;
-//    @FindBy(css = "subjects-auto-complete__value-container subjects-auto-complete__value-container--is-multi css-1hwfws3")
-    @FindBy(id = "subjectsContainer")
+    @FindBy(id = "subjectsInput")
     private WebElement subjectsInput;
-    @FindBy(css = ".custom-control custom-checkbox custom-control-inline")
+    @FindBy(css = "div#hobbiesWrapper > .col-md-9.col-sm-12 > div")
     private List<WebElement> hobbiesCheckboxes;
     @FindBy(css = "div#hobbiesWrapper > .col-md-9.col-sm-12")
     private WebElement hobbiesRadioCheckWrapper;
-    @FindBy(id = "uploadPicture")
+    @FindBy(xpath = "/html//input[@id='uploadPicture']")
     private WebElement selectPictureButton;
     @FindBy(css = "textarea#currentAddress")
     private WebElement currentAddressField;
-    @FindBy(css = ".css-tlfecz-indicatorContainer")
-    private WebElement selectStateOpenListButton;
-    @FindBy(css = "")
-    private List<WebElement> selectStateOpenList;
-    @FindBy(css = "")
-    private WebElement selectCityOpenListButton;
-    @FindBy(css = "")
-    private List<WebElement> selectCityOpenList;
+
+    @FindBy(xpath = "//div[@id='state']/div/div[2]/div")
+    private WebElement selectStateOpenList;
+    @FindBy(css = ".css-11unzgr > div")
+    private List<WebElement> selectStateList;
+    @FindBy(css = ".css-1uccc91-singleValue")
+    private WebElement stateFieldAfterSelection;
+
+    @FindBy(css = "#city [class='css-19bqh2r']")
+    private WebElement selectCityOpenList;
+    @FindBy(css = ".css-11unzgr > div")
+    private List<WebElement> selectCityList;
+    @FindBy(css = "div#city .css-1uccc91-singleValue")
+    private WebElement cityFieldAfterSelection;
+
     @FindBy(css = ".react-datepicker__month-select")
     private WebElement monthSelectElement;
     @FindBy(css = ".react-datepicker__year-select")
@@ -58,12 +70,20 @@ public class AutomationPracticeFormPage extends BasePage {
     @FindBy(css = "button#submit")
     private WebElement submitButton;
 
+    // podziekowanie
+    @FindBy(id = "example-modal-sizes-title-lg")
+    private WebElement subbmitingTitle;
+    @FindBy(id = "closeLargeModal")
+    private WebElement closeLargeModalButton;
+
+
     String dayOfBirth;
     String monthOfBirth;
     String yearOfBirth;
 
 
-    public void checkIfEverythingIsDisplayed(){
+    public void checkIfEverythingIsDisplayed() {
+        WaitBuilder.waitDefaultTime().untilElementIsVisible(nameInput);
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(WebElementHelper.isAvailable(nameInput, false), "Name input is not displayed");
         softAssert.assertTrue(WebElementHelper.isAvailable(lastNameInput, false), "Lastname input is not displayed");
@@ -75,11 +95,11 @@ public class AutomationPracticeFormPage extends BasePage {
         softAssert.assertTrue(WebElementHelper.isAvailable(hobbiesRadioCheckWrapper, false), "Hobbies checkboxes input is not displayed");
         softAssert.assertTrue(WebElementHelper.isAvailable(selectPictureButton, false), "Select picture element is not displayed");
         softAssert.assertTrue(WebElementHelper.isAvailable(currentAddressField, false), "Current Address field is not displayed");
-        softAssert.assertTrue(WebElementHelper.isAvailable(selectStateOpenListButton, true), "State and City field is not displayed");
+        softAssert.assertTrue(WebElementHelper.isAvailable(selectStateOpenList, true), "State field is not displayed");
+        softAssert.assertTrue(WebElementHelper.isAvailable(selectCityOpenList, true), "City field is not displayed");
         softAssert.assertTrue(WebElementHelper.isAvailable(submitButton, false), "Submit button is not displayed");
         softAssert.assertAll();
     }
-
 
     public AutomationPracticeFormPage enterName(String name) {
         inputHelper(nameInput, name);
@@ -117,12 +137,6 @@ public class AutomationPracticeFormPage extends BasePage {
     private void inputHelper(WebElement element, String value) {
         element.clear();
         element.sendKeys(value);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-//        Assert.assertEquals(element.getText(), value); // FIXME pobiera pustkę
     }
 
     @Step("Setting Date of birth")
@@ -177,14 +191,11 @@ public class AutomationPracticeFormPage extends BasePage {
     }
 
     @Step("Selection of items")
-    public AutomationPracticeFormPage selectionOfItems() {
-        JavascriptExecutor js = (JavascriptExecutor) DriverManager.getWebDriver();
-        js.executeScript("arguments[0].value='Your input text';", subjectsInput);
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+    public AutomationPracticeFormPage selectionOfItems(String subject) {
+        WaitBuilder.waitDefaultTime().untilElementIsVisible(subjectsInput);
+        subjectsInput.sendKeys(subject);
+        subjectsInput.sendKeys(Keys.ARROW_DOWN);
+        subjectsInput.sendKeys(Keys.ENTER);
         return this;
     }
 
@@ -196,7 +207,88 @@ public class AutomationPracticeFormPage extends BasePage {
                 hobbies.click();
                 break;
             }
+        return this;
+    }
+
+    @Step(value = "Dodanie zdjęcia")
+    public AutomationPracticeFormPage addPhoto() {
+        new JavaScriptExecutorClass().scrollToElement(selectPictureButton);
+        String photo = "src/test/resources/hello-world.png";
+        File file = FileManagingHelper.convertStringPathToAbsoluteFilePath(photo);
+        if (file.exists()) {
+            selectPictureButton.sendKeys(file.getAbsolutePath());
+        }
+//        Assert.assertEquals(selectPictureButton.getText(), "hello-world.png"); // TODO dodać jakąś asercję, ale póki co nie da sie pobrac textu
+        return this;
+    }
+
+    @Step("Set current address")
+    public AutomationPracticeFormPage setCurrentAddress(String address) {
+        currentAddressField.sendKeys(address);
+        return this;
+    }
+
+    @Step("Select State")
+    public AutomationPracticeFormPage selectState(String state) {
+        selectItemOnList(selectStateOpenList, selectStateList, state, stateFieldAfterSelection);
+        return this;
+    }
+
+    @Step("Select city")
+    public AutomationPracticeFormPage selectCity(String city) {
+        selectItemOnList(selectCityOpenList, selectCityList, city, cityFieldAfterSelection);
+        return this;
+    }
+
+    private void selectItemOnList(WebElement openList, List<WebElement> list, String text, WebElement afterSelect) {
+        new JavaScriptExecutorClass().scrollToEndOfPage();
+        openList.click();
+        for (WebElement option : list) {
+            if (option.getText().equals(text))
+                option.click();
+            break;
+        }
+        System.out.println("Selected element: " + afterSelect.getText());
+        assertEquals(afterSelect.getText(), text);
+    }
+
+    @Step("Submit button clinc")
+    public AutomationPracticeFormPage submitButtonClick() {
+        submitButton.click();
+        return this;
+    }
+
+    @Step("Thanks for submitting the form")
+    public AutomationPracticeFormPage subbmitingTheForm() {
+        WaitBuilder.waitDefaultTime().untilElementIsVisible(subbmitingTitle);
+        assertTrue(subbmitingTitle.isDisplayed());
+        assertEquals("Thanks for submitting the form", subbmitingTitle.getText());
+        return this;
+    }
+
+    @Step("Student check data")
+    public AutomationPracticeFormPage studentCheckData() {
 
         return this;
+    }
+
+    @Step("Student clicks close")
+    public void studentClicksClose() {
+        WaitBuilder.waitDefaultTime().untilElementIsVisible(closeLargeModalButton);
+        closeLargeModalButton.click();
+    }
+
+    private WebElement labelLocatorBuilding(String labelName) {
+        String locatorPart = "//td[.='";
+        String locatorPart1 = "/']";
+        String builder = locatorPart + labelName + locatorPart1;
+        return DriverManager.getWebDriver().findElement(By.xpath(builder));
+    }
+
+    private WebElement valueLocatorBuilding(String labelName) {
+        String locatorPart = "//td[.='";
+        String locatorPart1 = "']/following-sibling::td[1]";
+        String builder = locatorPart + labelName + locatorPart1;
+        return DriverManager.getWebDriver().findElement(By.xpath(builder));
     }
 }
