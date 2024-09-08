@@ -142,4 +142,9 @@ public class FormStepDefs extends BasePage {
     public void studentSprawdzaDane() {
         automationPracticeFormPage.studentCheckData();
     }
+
+    @Then("STUDENT klika w przycisk Close")
+    public void studentKlikaWPrzyciskClose() {
+        automationPracticeFormPage.studentClicksClose();
+    }
 }

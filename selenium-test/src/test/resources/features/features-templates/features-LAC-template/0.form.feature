@@ -1,5 +1,4 @@
-@Form
-
+@Portfolio
 Feature: Form Test
 
   Scenario: Scenariusz Podstawowy

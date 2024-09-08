@@ -1,4 +1,4 @@
-@RestApiTests
+@Portfolio
 
 Feature: Operacje na postach
 

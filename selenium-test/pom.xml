@@ -190,12 +190,6 @@
             <artifactId>gherkin</artifactId>
             <version>26.2.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>RestApi</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
 
     </dependencies>
     <build>

@@ -5,7 +5,6 @@ import commons.configuration.PropertiesLoader;
 import commons.driver.BrowserType;
 import commons.driver.manager.DriverManager;
 import commons.driver.manager.DriverUtils;
-import commons.utils.VideoMaker;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
@@ -28,6 +27,7 @@ public class Hook {
     String edgeBrowser;
     String operaBrowser;
     String safariBrowser;
+
     public Hook(TestContext testContext){
         context = testContext;
     }
@@ -90,7 +90,7 @@ public class Hook {
             e.printStackTrace();
         }
         if (scenario.isFailed()) {
-            VideoMaker.selenoidVideoAttach(context.getSessionId());
+//            VideoMaker.selenoidVideoAttach(context.getSessionId());
         }
     }
 }

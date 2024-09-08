@@ -1,8 +1,8 @@
 package runner;
 
 import commons.ImageManager;
-import commons.helpers.FileManagingHelper;
 import commons.driver.BrowserType;
+import commons.helpers.FileManagingHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.testng.ISuite;
@@ -29,8 +29,8 @@ public class SuiteListener implements ISuiteListener {
     @Override
     public void onStart(ISuite suite) {
         AllureEnvironmentSection.createEnvFile();
-//        FileManagingHelper.deleteDirectory(new File("src/test/resources/features/features-runtime"));
-//        FileManagingHelper.deleteWildcardFiles("src/test/resources/RQ", "*Todos");
+        FileManagingHelper.deleteDirectory(new File("src/test/resources/features/features-runtime"));
+        FileManagingHelper.deleteWildcardFiles("src/test/resources/RQ", "*json");
 
         env = System.getProperty("env");
         AllureEnvironmentSection.addEnvVariable("env", env);
@@ -38,7 +38,7 @@ public class SuiteListener implements ISuiteListener {
             AllureDockerServiceApi.cleanServerResults();
             log().debug("Clean server results done");
         } else {
-//            AllureDockerServiceApi.cleanResults();
+            AllureDockerServiceApi.cleanResults();
         }
         FileManagingHelper.fileCopier("src/test/resources","allure-results","categories.json");
 
@@ -77,11 +77,6 @@ public class SuiteListener implements ISuiteListener {
             featuresCopier.addBrowserType(BrowserType.CHROME);
         }
         featuresCopier.copyTemplatesFeatures();
-        try {
-//            DeletePublishedOffers.deleteOffers();
-        } catch (Exception e) {
-            log().error("Usuwanie ofert zakończone niepowodzeniem" + System.lineSeparator() + e.getMessage());
-        }
     }
 
     @Override
@@ -89,8 +84,8 @@ public class SuiteListener implements ISuiteListener {
         String env = System.getProperty("env");
         String suiteName = suite.getName();
         FileManagingHelper.deleteDirectory(new File("src/test/resources/features/features-runtime"));
-//        FileManagingHelper.deleteWildcardFiles("src/test/resources/RQ", "*Todos");
-//        FileManagingHelper.deleteWildcardFiles("videos", "*mp4");
+        FileManagingHelper.deleteWildcardFiles("src/test/resources/RQ", "*json");
+        FileManagingHelper.deleteWildcardFiles("videos", "*mp4");
         if (Objects.equals(suiteName, "Testy Express")) {
             ImageManager imageManager = new ImageManager();
             imageManager.resizeAttachments();
@@ -102,5 +97,4 @@ public class SuiteListener implements ISuiteListener {
             }
         }
     }
-
 }

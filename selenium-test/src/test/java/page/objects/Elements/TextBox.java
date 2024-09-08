@@ -1,5 +1,8 @@
 package page.objects.Elements;
 
+import commons.javaScriptExecutor.JavaScriptExecutorClass;
+import io.qameta.allure.Step;
+import lombok.Getter;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import page.objects.BasePage;
@@ -22,40 +25,40 @@ public class TextBox extends BasePage {
     @FindBy(xpath = "/html//p")
     public List<WebElement> summarySection;
 
-    // Lista, która przechowuje dane
+    @Getter
     private List<String> savedData = new ArrayList<>();
 
-    // Metoda wypełniająca pola formularza i zapisująca dane do listy
+    @Step("Form completion")
     public void fillFormAndSaveData(String fullName, String email, String currentAddress, String permanentAddress) {
-        // Wypełnienie pól formularza
         fullNameInput.sendKeys(fullName);
         emailInput.sendKeys(email);
         currentAddressInput.sendKeys(currentAddress);
         permanentAddressInput.sendKeys(permanentAddress);
 
-        // Zapisanie danych do listy
-        savedData.add("Full Name: " + fullName);
-        savedData.add("Email: " + email);
-        savedData.add("Current Address: " + currentAddress);
-        savedData.add("Permanent Address: " + permanentAddress);
+        savedData.add("Name:" + fullName);
+        savedData.add("Email:" + email);
+        savedData.add("Current Address :" + currentAddress);
+        savedData.add("Permananet Address :" + permanentAddress);
     }
 
-    // Metoda zwracająca zapisane dane
-    public List<String> getSavedData() {
-        return savedData;
+    @Step("Clicking the confirmation button")
+    public void clickConfirmationButton() {
+        new JavaScriptExecutorClass().scrollToEndOfPage();
+        submitButton.click();
     }
 
-    // Metoda pobierająca dane z sekcji podsumowania i porównująca z zapisanymi danymi
+
+    @Step("Data validation")
     public boolean compareSummaryWithData() {
-        // Tworzymy listę do przechowywania danych z sekcji podsumowania
         List<String> summaryData = new ArrayList<>();
-
-        // Przechodzimy przez elementy summarySection i dodajemy ich tekst do listy
         for (WebElement element : summarySection) {
-            summaryData.add(element.getText());
+            System.out.println("To summaryData.add(element.getText() : "+ summaryData.add(element.getText()));
+            System.out.println("To zcompareSummaryWithData : "+ element.getText());
         }
 
-        // Porównanie dwóch list - zapisanej i z podsumowania
+        System.out.println("Summary data: "+ summaryData);
+        System.out.println("Saved data: "+ savedData);
+
         return savedData.equals(summaryData);
     }
 }

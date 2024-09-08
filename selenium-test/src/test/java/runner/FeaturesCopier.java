@@ -38,7 +38,6 @@ public class FeaturesCopier {
 
     private void copyFeatures(File sourceDir) {
         if (!sourceDir.isDirectory()) {
-            System.out.println("========================================= copyFeatures");
             return;
         }
         File[] features = sourceDir.listFiles();
@@ -47,8 +46,8 @@ public class FeaturesCopier {
             for (BrowserType browser : browserTypes) {
                 String oldName = String.valueOf(feature);
                 String newPath = oldName
-                    .replace(sourceDir.toPath().toString(), targetDir.toPath().toString())
-                    .replace(".feature", "_" + browser.name() + ".feature");
+                        .replace(sourceDir.toPath().toString(), targetDir.toPath().toString())
+                        .replace(".feature", "_" + browser.name() + ".feature");
                 try {
                     Files.copy(feature.toPath(), Path.of(newPath));
                     addBrowserTag(newPath, browser);

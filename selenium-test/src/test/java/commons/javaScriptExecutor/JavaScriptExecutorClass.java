@@ -40,9 +40,9 @@ public class JavaScriptExecutorClass {
     }
 
     // Oczekiwanie aż strona wczyta się całkowicie
-    public void waitUntilPageReady(){
+    public void waitUntilPageReady() {
         new WebDriverWait(DriverManager.getWebDriver(), Duration.ofSeconds(10)).until(
-              webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+                webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
     }
 
     // Przewinięcie strony na samą górę
@@ -51,6 +51,7 @@ public class JavaScriptExecutorClass {
         JavascriptExecutor javascriptExecutor = getJSE();
         javascriptExecutor.executeScript("window.scrollTo(0, -document.body.scrollHeight)");
     }
+
     // Przewinięcie strony na sam dół
     public void scrollToEndOfPage() {
         try {
@@ -88,13 +89,13 @@ public class JavaScriptExecutorClass {
         }
     }
 
-    public Object[] getCurrentDocumentPosition(){
-        Object Height =  ((JavascriptExecutor) DriverManager.getWebDriver()).executeScript("return document.body.offsetHeight");
+    public Object[] getCurrentDocumentPosition() {
+        Object Height = ((JavascriptExecutor) DriverManager.getWebDriver()).executeScript("return document.body.offsetHeight");
         Object Width = ((JavascriptExecutor) DriverManager.getWebDriver()).executeScript("return document.body.offsetWidth");
         return new Object[]{Height, Width};
     }
 
-    public void scrollToPosition(Object[] position){
+    public void scrollToPosition(Object[] position) {
         scrollToTop();
         long height = (long) position[0];
         long width = (long) position[1];
@@ -109,41 +110,47 @@ public class JavaScriptExecutorClass {
     }
 
     // Podmień dane innerText
-    public void setInnerText(String text, WebElement element){
+    public void setInnerText(String text, WebElement element) {
         JavascriptExecutor javascriptExecutor = getJSE();
-        javascriptExecutor.executeScript("arguments[0].innerText = '" + text +"'", element);
+        javascriptExecutor.executeScript("arguments[0].innerText = '" + text + "'", element);
     }
 
     // Wpisanie tekstu w input
-    public void sendKeysJSE(WebElement element,String text){
+    public void sendKeysJSE(WebElement element, String text) {
         JavascriptExecutor javascriptExecutor = getJSE();
         javascriptExecutor.executeScript("arguments[0].value='" + text + "';", element);
 
     }
 
-    public void openNewTab(){
+    public void openNewTab() {
         JavascriptExecutor javascriptExecutor = getJSE();
         javascriptExecutor.executeScript("window.open()");
     }
 
-    public void scrollToTestedElement(WebElement element){
-        try{
+    public void scrollToTestedElement(WebElement element) {
+        try {
             scrollToElement(element);
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             ScreenShotMaker.makeFullPageScreenShot();
             throw new AssertionError(e.getMessage());
         }
     }
 
-    public void changeZoomValue(double zoom){
+    public void changeZoomValue(double zoom) {
         JavascriptExecutor javascriptExecutor = getJSE();
         javascriptExecutor.executeScript("document.body.style.transform = 'scale(' + arguments[0]+')'", zoom);
     }
 
-    public void scrollBy(int height, int width){
+    public void scrollBy(int height, int width) {
         int heightToScroll = height;
         int widthToScroll = width;
         JavascriptExecutor javascriptExecutor = getJSE();
         javascriptExecutor.executeScript("window.scrollBy(arguments[0],arguments[1])", widthToScroll, heightToScroll);
+    }
+
+    public void doubleClick(WebElement element) {
+        JavascriptExecutor javascriptExecutor = getJSE();
+        String script = "var event = new MouseEvent('dblclick', {bubbles: true, cancelable: true, view: window}); arguments[0].dispatchEvent(event);";
+        javascriptExecutor.executeScript(script, element);
     }
 }
