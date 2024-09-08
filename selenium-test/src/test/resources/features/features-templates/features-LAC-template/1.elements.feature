@@ -39,11 +39,9 @@ Feature: Elements Test
       Then SYSTEM po kliknięciu wyświetla <komunikat>
       Examples:
         | button          | komunikat                     |
+        | Double Click Me | You have done a double click  |
+        | Right Click Me  | You have done a right click   |
         | Click Me        | You have done a dynamic click |
-#        | Double Click Me | You have done a double click  |
-#        | Right Click Me  | You have done a right click   |
-
-
 
 
     Scenario: Links test
