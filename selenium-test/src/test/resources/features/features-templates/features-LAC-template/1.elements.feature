@@ -12,7 +12,33 @@ Feature: Elements Test
       When UŻYTKOWNIK zatwierdza dane
       Then SYSTEM wyświetla dane
 
-    Scenario: Check Box test
+  Rule: Check Box Tests
+
+    Background:
+      When UŻYTKOWNIK przechodzi do zakładki Elementy
+
+    Scenario Outline: Check Box test
+      When UŻYTKOWNIK przechodzi do zakładki CheckBox
+      When UŻYTKOWNIK oznaczy <checkbox>
+      Then SYSTEM wyświetli listę zaznaczonych <checkbox>
+
+      Examples:
+        | checkbox       |
+        | Home           |
+        | Desktop        |
+        | Notes          |
+        | Commands       |
+        | Documents      |
+        | WorkSpace      |
+        | React          |
+        | Angular        |
+        | Office         |
+        | Public         |
+        | Classified     |
+        | General        |
+        | Downloads      |
+        | Word File.doc  |
+        | Excel File.doc |
 
   Rule: Radio Button tests
 
@@ -45,6 +71,8 @@ Feature: Elements Test
 
 
     Scenario: Links test
+
+
 
     Scenario: Broken Links - Images test
 
