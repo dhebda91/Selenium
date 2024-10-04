@@ -23,12 +23,12 @@ public class ButtonsStepDefs extends BasePage {
         Assert.assertTrue(DriverManager.getWebDriver().getCurrentUrl().contains("buttons"));
     }
 
-    @When("UŻYTKOWNIK klika w {}")
+    @When("UŻYTKOWNIK klika w button {}")
     public void użytkownikKlikaWButton(String button) {
         buttons.clickButton(button);
     }
 
-    @Then("SYSTEM po kliknięciu wyświetla {}")
+    @Then("SYSTEM po kliknięciu wyświetla odpowiedni {}")
     public void systemPoKliknięciuWyświetlaKomunikat(String komunikat) {
         buttons.checkMessage(komunikat);
     }

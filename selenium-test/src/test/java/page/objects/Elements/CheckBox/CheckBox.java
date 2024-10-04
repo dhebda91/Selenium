@@ -2,6 +2,7 @@ package page.objects.Elements.CheckBox;
 
 import commons.driver.manager.DriverManager;
 import commons.waits.WaitBuilder;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -43,15 +44,18 @@ public class CheckBox extends BasePage {
     @FindBy(xpath = "//button[@title='Expand all']")
     private WebElement expandAllButton;
 
+    @Step(value = "Otworzenie listy")
     public void clickOnExpandAllButtonClick() {
         expandAllButton.click();
     }
 
+    @Step(value = "Kliknięcie w checkbox")
     public void clickOnCheckBox(String checkbox) {
         checkbox = OptimizedListAndCheckBoxNames.processCheckboxName(checkbox);
 
         WebElement checkboxElement = findCheckbox(checkbox);
         WaitBuilder.waitDefaultTime().untilElementIsVisible(checkboxElement);
+        WaitBuilder.waitDefaultTime().untilElementIsClickable(checkboxElement);
         checkboxElement.click();
         checkIfCheckboxIsSelectedByClassAttribute(checkbox);
     }
@@ -89,6 +93,7 @@ public class CheckBox extends BasePage {
         return "[for='tree-node-" + checkboxName + "'] .rct-checkbox";
     }
 
+    @Step(value = "Sprawdzanie wyświetlanego tesktu przez system")
     public void getResult(String checkboxName) {
         System.out.println("******************************************************************");
         System.out.println(checkboxName);
@@ -109,6 +114,7 @@ public class CheckBox extends BasePage {
         System.out.println("Lista oczekiwana jest taka sama jak na stronie: " + areEqual);
         Assert.assertTrue(areEqual);
     }
+
 
     private List<String> returnList(String checkboxName) {
         List<String> list = Optional.ofNullable(LIST_MAP.get(OptimizedListAndCheckBoxNames.processCheckboxName(checkboxName))).orElse(List.of());

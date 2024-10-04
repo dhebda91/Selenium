@@ -39,8 +39,8 @@ public class TextBoxStepDefs extends BasePage {
         textBox.clickConfirmationButton();
     }
 
-    @Then("SYSTEM wyświetla dane")
-    public void systemWyświetlaDane() {
+    @Then("SYSTEM prezentuje odpowiednie dane")
+    public void systemWyświetlaOdpowiednieDane() {
         boolean result = textBox.compareSummaryWithData();
         Assert.assertTrue(result, "Data not equals");
     }
