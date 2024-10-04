@@ -127,6 +127,7 @@ public class BrowserFactory {
                     System.setProperty("webdriver.chrome.driver", LocalWebDriverProperties.getChromeWebDriverLocation());
                     ChromeOptions options = new ChromeOptions();
                     options.addArguments("--incognito");
+//                    options.addArguments("--headless");
                     options.addArguments("--remote-allow-origins=*");
                     HashMap<String, Object> prefs = new HashMap<String, Object>();
                     prefs.put("download.default_directory", downloadDirAbsolutePath);
